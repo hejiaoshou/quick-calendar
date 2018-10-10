@@ -1,0 +1,43 @@
+{
+  "package": "com.application.demo",
+  "name": "wnl",
+  "versionName": "1.0.0",
+  "versionCode": "1",
+  "minPlatformVersion": "101",
+  "icon": "/Common/logo.png",
+  "features": [
+    { "name": "system.prompt" },
+    { "name": "system.router" },
+    { "name": "system.shortcut" },
+    { "name": "system.device"}
+  ],
+  "permissions": [
+    { "origin": "*" }
+  ],
+  "config": {
+    "logLevel": "off"
+  },
+  "router": {
+    "entry": "home",
+    "pages": {
+      "home": {
+        "component": "index"
+      },
+      "yue": {
+        "component": "index"
+      },
+      "year": {
+        "component": "index"
+      }
+    }
+  },
+  "display": {
+    "titleBarBackgroundColor": "#e1c8a0",
+    "titleBarTextColor": "#fff",
+    "titleBar": false,
+    "menu": false,
+    "pages": {
+
+    }
+  }
+}

@@ -1,0 +1,145 @@
+<template>
+  <div class="home">
+
+    <div class="header">
+      <picker type="date" value="2018-12-31"></picker>
+    </div>
+
+    <div class="top">
+      <div class="top_item" for="{{top_list}}">
+        <text class="{{$item == '日' ||  $item == '六' ? 'color_red' : ''}}">{{$item}}</text>
+      </div>
+    </div>
+
+    <div class="rili">
+      <div class="item select" for="{{rili}}">
+        <text class="{{$item.week == 0 ||  $item.week == 6 ? 'color_red' : ''}}">{{$item.Number}}</text>
+      </div>
+    </div>
+
+    <input class="btn" type="button" value="跳转到详情页1" onclick="routeDetail" />
+  </div>
+</template>
+
+<style lang="less">
+  .home {
+    flex-direction: column;
+    /* justify-content: center; */
+    /* align-items: center; */
+    .header {
+      width: 100%;
+      height: 80px;
+      background-color: #e1c8a0;
+      justify-content: center;
+      picker {
+        color: #ffffff;
+        font-size: 30px;
+      }
+    }
+    .top {
+      padding: 10px 0px;
+      .top_item {
+        flex: 1;
+        justify-content: center;
+      }
+      .color_red {
+        color: red;
+      }
+    }
+    .rili {
+      flex-wrap: wrap;
+      .item {
+        width: 14.28%;
+        justify-content: center;
+        .color_red {
+          color: red;
+        }
+      }
+      .select {
+        border: 1px solid red;
+      }
+    }
+  }
+
+  .title {
+    font-size: 40px;
+    text-align: center;
+  }
+
+  .btn {
+    width: 550px;
+    height: 86px;
+    margin-top: 75px;
+    border-radius: 43px;
+    background-color: #09ba07;
+    font-size: 30px;
+    color: #ffffff;
+  }
+</style>
+
+<script>
+  import router from '@system.router'
+
+  export default {
+    private: {
+      top_list: ['日','一','二','三','四','五','六'],
+      rili: [],
+      init: {
+        y: 2000, //年
+        m: 1, //月（1-12）
+        pure_m: 0, //月（0-11）
+        d: 1, //天
+        week: 0 //星期（0-6）（周日-周六）
+      }
+    },
+    onInit () {
+      // 获得年月日星期
+      var _date = new Date()
+      this.init.y = _date.getFullYear()
+      this.init.m = _date.getMonth()+1
+      this.init.pure_m = _date.getMonth()
+      this.init.d = _date.getDate()
+      this.init.week = _date.getDay()
+
+      this.render(this.init)
+      this.$app.$def.getDeviceInfo().then((res) => {
+        this.$app.$def.Alert(res)
+      })
+    },
+    render (_data) {
+      var _y = _data.y
+      var _m = _data.m
+      var pure_m = _data.pure_m
+      var _d = _data.d
+      var _week = _data.week
+      // 获得本月最大天数
+      var yue_dayNumber = new Date(_y,_m,0)
+      var last_Number = yue_dayNumber.toString().split(' ')[2]*1
+      // 填充日历，星期
+      var _rili = []
+      for(var i = 1; i <= last_Number; i++) {
+        var _thisDay = {
+          Number: i,
+          week: new Date(_y,pure_m,i).getDay()
+        }
+        _rili.push(_thisDay)
+      }
+      // 如果第一项不是周末，填充缺省的空白日期
+      if (_rili[0].week !== 0) {
+        for (var y = 0; y < _rili[0].Number; y++) {
+          var _thisDay = {
+            Number: ' ',
+            week: '-'
+          }
+          _rili.unshift(_thisDay)
+        }
+      }
+      this.rili = _rili
+    },
+    routeDetail () {
+      router.push ({
+        uri: '/DemoDetail'
+      })
+    },
+  }
+</script>
