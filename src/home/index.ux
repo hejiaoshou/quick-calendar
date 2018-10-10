@@ -2,7 +2,7 @@
   <div class="home">
 
     <div class="header">
-      <picker type="date" value="2018-12-31"></picker>
+      <picker type="date" @change="selectDate()" value="{{userSelect.y + '-' + userSelect.m + '-' + userSelect.d}}"></picker>
     </div>
 
     <div class="top">
@@ -11,8 +11,8 @@
       </div>
     </div>
 
-    <div class="rili">
-      <div class="item select" for="{{rili}}">
+    <div class="rili" @swipe="swipeSelect()">
+      <div class="item {{$item.Number == userSelect.d ? 'select' : ''}}" for="{{rili}}">
         <text class="{{$item.week == 0 ||  $item.week == 6 ? 'color_red' : ''}}">{{$item.Number}}</text>
       </div>
     </div>
@@ -49,14 +49,16 @@
     .rili {
       flex-wrap: wrap;
       .item {
-        width: 14.28%;
+        width: 107.14px;
+        height: 107.14px;
         justify-content: center;
         .color_red {
           color: red;
         }
       }
       .select {
-        border: 1px solid red;
+        border: 3px solid red;
+        border-radius: 10px;
       }
     }
   }
@@ -84,7 +86,15 @@
     private: {
       top_list: ['日','一','二','三','四','五','六'],
       rili: [],
+      donghua: 100,
       init: {
+        y: 2000, //年
+        m: 1, //月（1-12）
+        pure_m: 0, //月（0-11）
+        d: 1, //天
+        week: 0 //星期（0-6）（周日-周六）
+      },
+      userSelect: {
         y: 2000, //年
         m: 1, //月（1-12）
         pure_m: 0, //月（0-11）
@@ -92,6 +102,7 @@
         week: 0 //星期（0-6）（周日-周六）
       }
     },
+
     onInit () {
       // 获得年月日星期
       var _date = new Date()
@@ -100,18 +111,16 @@
       this.init.pure_m = _date.getMonth()
       this.init.d = _date.getDate()
       this.init.week = _date.getDay()
-
+      
+      this.userSelect = this.init
       this.render(this.init)
-      this.$app.$def.getDeviceInfo().then((res) => {
-        this.$app.$def.Alert(res)
-      })
     },
+
     render (_data) {
       var _y = _data.y
       var _m = _data.m
       var pure_m = _data.pure_m
       var _d = _data.d
-      var _week = _data.week
       // 获得本月最大天数
       var yue_dayNumber = new Date(_y,_m,0)
       var last_Number = yue_dayNumber.toString().split(' ')[2]*1
@@ -126,15 +135,50 @@
       }
       // 如果第一项不是周末，填充缺省的空白日期
       if (_rili[0].week !== 0) {
-        for (var y = 0; y < _rili[0].Number; y++) {
-          var _thisDay = {
-            Number: ' ',
-            week: '-'
-          }
+
+        var one_day_week = _rili[0].week*1
+        var _thisDay = {
+          Number: ' ',
+          week: '-'
+        }
+
+        for (var y = 0; y < one_day_week; y++) {
           _rili.unshift(_thisDay)
         }
       }
       this.rili = _rili
+    },
+
+    selectDate (val) {
+      this.userSelect.y = val.year
+      this.userSelect.m = val.month+1
+      this.userSelect.pure_m = val.month
+      this.userSelect.d = val.day
+
+      this.render(this.userSelect)
+    },
+
+    swipeSelect (val) {
+      if (val.direction == 'left') {
+        if (this.userSelect.m == 12) {
+          ++this.userSelect.y
+          this.userSelect.m = 1
+          this.userSelect.pure_m = 0
+        } else {
+          ++this.userSelect.m
+          ++this.userSelect.pure_m
+        }
+      } else if (val.direction == 'right') {
+        if (this.userSelect.m == 1) {
+          --this.userSelect.y
+          this.userSelect.m = 12
+          this.userSelect.pure_m = 11
+        } else {
+          --this.userSelect.m
+          --this.userSelect.pure_m
+        }
+      }
+      this.render(this.userSelect)
     },
     routeDetail () {
       router.push ({
