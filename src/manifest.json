@@ -1,6 +1,6 @@
 {
-  "package": "com.application.demo",
-  "name": "wnl",
+  "package": "com.application.wnl",
+  "name": "万年历",
   "versionName": "1.0.0",
   "versionCode": "1",
   "minPlatformVersion": "101",
@@ -9,13 +9,14 @@
     { "name": "system.prompt" },
     { "name": "system.router" },
     { "name": "system.shortcut" },
-    { "name": "system.device"}
+    { "name": "system.device"},
+    {"name": "system.fetch"}
   ],
   "permissions": [
     { "origin": "*" }
   ],
   "config": {
-    "logLevel": "off"
+    "logLevel": "debug"
   },
   "router": {
     "entry": "home",

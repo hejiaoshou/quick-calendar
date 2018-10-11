@@ -73,6 +73,22 @@ function Alert(val) {
   })
 }
 
+function Ajax (url) {
+  const fetch = require('@system.fetch')
+  return new Promise ((resolve, reject) => {
+    fetch.fetch({
+      url: url,
+      success: function (response) {
+        resolve(response)
+      },
+      fail: function (err, code) {
+        Alert('网络错误，请稍后再试！'+code)
+      }
+    })
+  })
+
+}
+
 function getDeviceInfo () {
   const device = require('@system.device')
   return new Promise ((resolve, reject) => {
@@ -82,12 +98,21 @@ function getDeviceInfo () {
       }
     })
   })
+}
 
+function goTo (uri,val) {
+  const router = require('@system.router')
+  router.push ({
+    uri: uri,
+    params: val
+  })
 }
 
 export default {
   showMenu,
   createShortcut,
   Alert,
-  getDeviceInfo
+  getDeviceInfo,
+  Ajax,
+  goTo
 }

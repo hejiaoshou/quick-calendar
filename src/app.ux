@@ -8,6 +8,8 @@
     showMenu: util.showMenu,
     createShortcut: util.createShortcut,
     Alert: util.Alert,
-    getDeviceInfo: util.getDeviceInfo
+    getDeviceInfo: util.getDeviceInfo,
+    Ajax: util.Ajax,
+    goTo: util.goTo
   }
 </script>

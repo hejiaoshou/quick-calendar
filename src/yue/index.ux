@@ -1,164 +1,146 @@
 <template>
-  <div class="demo-page">
-    <!-- 应用图标 -->
-    <image id="icon" src="{{icon}}"></image>
+  <div class="yue">
+      <div class="header">
+        <picker @change="selectm()" type="text" selected="{{selected}}" range="{{oneTotwelve}}" value="{{y}}年{{m}}月"></picker>
+      </div>
 
-    <!-- 应用名 -->
-    <text id="name">{{name}}</text>
+      <list class="content">
+        <block for="{{holiDayData}}">
+          <list-item class="one_holiday" type="holiday">
+            <div class="left">
+              <div>
+                <text>{{y}}.{{$item.m}}</text>
+              </div>
+              <div>
+                <text class="Day">{{$item.d}}</text>
+              </div>
+              <div>
+                  <text>{{week[$item.week]}}</text>
+                </div>
+            </div>
 
-    <!-- 应用标签 -->
-    <div id="tags">
-      <text class="tag">无安装</text>
-      <text class="gap">|</text>
-      <text class="tag">体积小</text>
-      <text class="gap">|</text>
-      <text class="tag">一步直达</text>
-    </div>
-
-    <!-- 应用描述 -->
-    <text id="desc">{{desc}}</text>
-
-    <!-- 应用详情 -->
-    <div class="detail detail-first">
-      <text class="detail-title">服务类型</text>
-      <text class="detail-content">{{serviceType}}</text>
-    </div>
-    <div class="detail">
-      <text class="detail-title">主体信息</text>
-      <text class="detail-content">{{subjectInfo}}</text>
-    </div>
-
-    <!-- 创建快捷方式 -->
-    <input class="btn" type="button" onclick="createShortcut" value="创建快捷方式" />
-
-    <!-- 版权信息 -->
-    <text id="footer">{{copyright}}</text>
+            <div class="right">
+              <div class="title">
+                <text>{{$item.name}}</text>
+              </div>
+              <div>
+                <text>{{$item.desc}}</text>
+              </div>
+            </div>
+          </list-item>
+        </block>
+      </list>
   </div>
 </template>
 
-<style>
-  .demo-page {
+<style lang="less">
+  .yue {
     flex-direction: column;
     align-items: center;
-  }
+    .header {
+      width: 100%;
+      height: 80px;
+      background-color: #e1c8a0;
+      justify-content: center;
+      align-items: center;
+      picker {
+        color: #ffffff;
+        font-size: 30px;
+      }
+    }
+    .content {
+      padding: 0px 25px 15px 25px;
+      .one_holiday {
+        margin: 20px 0px;
+        width: 100%;
+        height: 200px;
+        border: 2px solid #e1c8a0;
+        padding: 10px;
+        .left {
+          width: 200px;
+          border: 2px solid  #e1c8a0;
+          border-left-width: 0px;
+          border-top-width: 0px;
+          border-bottom-width: 0px;
+          flex-direction: column;
+          align-items: center;
+          justify-content: space-between;
+          .Day {
+            font-size: 60px;
+          }
+        }
+        .right {
+          width: 550px;
+          flex-direction: column;
+          align-items: flex-start;
+          padding-left: 10px;
+          .title {
+            width: 100%;
+            text {
+              color: red;
+            }
+          }
+        }
+      }
+    }
 
-  /* 应用图标 */
-  #icon {
-    margin-top: 90px;
-    width: 134px;
-    height: 134px;
-    border-radius: 10px;
-    border: 1px solid #8d8d8d;
-  }
-
-  /* 应用名 */
-  #name {
-    margin-top: 20px;
-    font-size: 36px;
-    color: #000000;
-  }
-
-  /* 应用标签 */
-  #tags {
-    margin-top: 22px;
-    align-items: center;
-  }
-
-  .tag {
-    padding-left: 20px;
-    padding-right: 20px;
-    font-size: 28px;
-    color: #2a9700;
-  }
-
-  .gap {
-    font-size: 22px;
-    color: #b2b2b2;
-  }
-
-  /* 应用描述 */
-  #desc {
-    width: 650px;
-    margin-top: 40px;
-    line-height: 35px;
-    font-size: 25px;
-    color: #8d8d8d;
-  }
-
-  /* 应用详情 */
-  .detail {
-    width: 650px;
-    height: 90px;
-    border-bottom-width: 1px;
-    border-bottom-color: #f0f0f0;
-  }
-
-  .detail-first {
-    margin-top: 65px;
-    border-top-width: 1px;
-    border-top-color: #f0f0f0;
-  }
-
-  .detail-title {
-    width: 160px;
-    padding-left: 10px;
-    font-size: 25px;
-    color: #000000;
-  }
-
-  .detail-content {
-    font-size: 25px;
-    color: #8d8d8d;
-  }
-
-  /* 按钮 */
-  .btn {
-    width: 550px;
-    height: 86px;
-    margin-top: 75px;
-    border-radius: 43px;
-    background-color: #09ba07;
-    font-size: 30px;
-    color: #ffffff;
-  }
-
-  /* 底部版权信息 */
-  #footer {
-    width: 750px;
-    position: fixed;
-    bottom: 55px;
-    font-size: 25px;
-    color: #8d8d8d;
-    text-align: center;
   }
 </style>
 
 <script>
-  /**
-   * 默认的菜单页(可自定义)
-   * name默认为manifest文件中的name字段
-   * icon默认为manifest文件中的icon字段
-   * 若需修改页面中文本，请修改ViewModel private中对应变量
-   * 注意：使用加载器测试`创建桌面快捷方式`功能时，需要进入系统设置->权限管理->开启应用加载器的`桌面快捷方式`权限，才能保存到桌面。应用上线后可自动获取`桌面快捷方式`权限
-   */
   export default {
     protected: {
-      name: null,
-      icon: null
+      y: '',
+      m: ''
     },
     private: {
-      desc: '即点即用，让你省去下载安装的步骤，立即使用各类服务',
-      serviceType: '工具类',
-      subjectInfo: 'xxx有限公司',
-      copyright: ''
+      week: ['星期日','星期一','星期二','星期三','星期四','星期五','星期六'],
+      holiDayData: [],
+      oneTotwelve: [],
+      selected: 0
     },
     onInit () {
-      // 设置标题栏
-      this.$page.setTitleBar({ text: this.name })
+      this.getHoliDay()
+
+      for(var i = 1; i < 13; i++) {
+        this.oneTotwelve.push(i)
+      }
+
+      this.selected = this.oneTotwelve.indexOf(this.m*1)
     },
-    createShortcut () {
-      // 创建快捷方式
-      this.$app.$def.createShortcut()
+    getHoliDay () {
+      var url = `http://v.juhe.cn/calendar/month?key=044f43470d3a3fd8ca231298094098e1&year-month=${this.y}-${this.m}`
+      this.$app.$def.Ajax(url).then(res => {
+        res.data = JSON.parse(res.data)
+
+        if (res.code == 200 && res.data.reason == 'Success') {
+          
+          this.holiDayData = res.data.result.data.holiday_array
+          var list = []
+
+          res.data.result.data.holiday_array.map(item => {
+            var _date = item.festival.split('-')
+            var _item = {
+              name: item.name,
+              desc: item.desc,
+              y: _date[0],
+              m: _date[1],
+              d: _date[2],
+              week: new Date(_date[0], _date[1] - 1, _date[2]).getDay()
+            }
+
+            list.push(_item)
+          })
+
+          this.holiDayData = list
+        } else {
+          this.$app.$def.Alert('网络繁忙，请稍后再试！')
+        }
+      })
+    },
+    selectm (val) {
+      this.m = this.oneTotwelve[val.newSelected]
+      this.getHoliDay()
     }
   }
 </script>
