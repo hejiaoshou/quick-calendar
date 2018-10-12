@@ -2,7 +2,8 @@
   <div class="home">
 
     <div class="header">
-      <picker type="date" @change="selectDate()" value="{{userSelect.y + '-' + userSelect.m + '-' + userSelect.d}}"></picker>
+      <picker type="date" id="pickerOne" @change="selectDate()" value="{{userSelect.y + '-' + userSelect.m + '-' + userSelect.d}}"></picker>
+      <!-- <image class="pull" @click="showPicker()" src="/Common/pull.png"></image> -->
       <div class="ToDay" @click="ToDay()">
         <text>今</text>
       </div>
@@ -14,6 +15,7 @@
       </div>
     </div>
 
+    <!-- <div class="rili" @swipe="swipeSelect()"> -->
     <div class="rili">
       <div class="item  {{userSelect.m == init.m && userSelect.y == init.y && $item.Number == init.d ? 'select_Today' : ''}} {{$item.Number == userSelect.d ? 'select' : ''}}" for="{{rili}}" @click="selectDay($item.Number)">
         <text class="{{$item.week == 0 ||  $item.week == 6 ? 'color_red' : ''}}">{{$item.Number}}</text>
@@ -50,10 +52,10 @@
         <div if="{{ToDayInfo.holiday}}">
           <text class="red_color">{{ToDayInfo.holiday}}</text>
         </div>
-        <div>
+        <div if="{{ToDayInfo.lunarYear}}">
           <text>{{ToDayInfo.lunarYear}}</text>
         </div>
-        <div>
+        <div if="{{ToDayInfo.animalsYear}}">
           <text>属{{ToDayInfo.animalsYear}}</text>
         </div>
       </div>
@@ -71,7 +73,6 @@
         </div>
       </div>
     </div>
-
   </div>
 </template>
 
@@ -89,6 +90,10 @@
       picker {
         color: #ffffff;
         font-size: 30px;
+      }
+      .pull {
+          width: 40px;
+          resize-mode: contain;
       }
       .ToDay {
         justify-content: center;
@@ -356,6 +361,9 @@
     },
 
     selectDay(_val) {
+      if (_val == ' ') {
+          return
+      }
       this.userSelect.week = new Date(this.userSelect.y,this.userSelect.pure_m,_val).getDay()
       this.userSelect.d = _val
       this.getToDayInfo()
@@ -372,9 +380,15 @@
         if (res.code == 200 && res.data.reason == 'Success') {
           _this.ToDayInfo =  res.data.result.data
         } else {
+          _this.ToDayInfo = {}
           _this.$app.$def.Alert('网络繁忙，请稍后再试！')
         }
       })
     },
+
+    showPicker () {
+        this.$emitElement('show',null,'pickerOne')
+        // this.$on('show',null,'pickerOne')
+    }
   }
 </script>

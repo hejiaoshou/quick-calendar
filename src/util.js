@@ -108,11 +108,17 @@ function goTo (uri,val) {
   })
 }
 
+function goBack (uri) {
+    const router = require('@system.router')
+    uri ? router.back() : router.back({ path: uri })
+}
+
 export default {
   showMenu,
   createShortcut,
   Alert,
   getDeviceInfo,
   Ajax,
-  goTo
+  goTo,
+  goBack
 }

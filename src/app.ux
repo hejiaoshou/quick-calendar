@@ -10,6 +10,7 @@
     Alert: util.Alert,
     getDeviceInfo: util.getDeviceInfo,
     Ajax: util.Ajax,
-    goTo: util.goTo
+    goTo: util.goTo,
+    goBack: util.goBack
   }
 </script>
