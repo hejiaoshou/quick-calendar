@@ -62,6 +62,7 @@
           margin: 20px 0px;
           width: 100%;
           border: 2px solid #e1c8a0;
+          border-radius: 10px;
           padding: 10px;
           flex-direction: column;
         }

@@ -2,11 +2,13 @@
   <div class="home">
 
     <div class="header">
+      <!-- <text>上个月</text> -->
       <picker type="date" id="pickerOne" @change="selectDate()" value="{{userSelect.y + '-' + userSelect.m + '-' + userSelect.d}}"></picker>
       <!-- <image class="pull" @click="showPicker()" src="/Common/pull.png"></image> -->
       <div class="ToDay" @click="ToDay()">
         <text>今</text>
       </div>
+      <!-- <text>下个月</text> -->
     </div>
 
     <div class="top">
@@ -17,7 +19,11 @@
 
     <!-- <div class="rili" @swipe="swipeSelect()"> -->
     <div class="rili">
-      <div class="item  {{userSelect.m == init.m && userSelect.y == init.y && $item.Number == init.d ? 'select_Today' : ''}} {{$item.Number == userSelect.d ? 'select' : ''}}" for="{{rili}}" @click="selectDay($item.Number)">
+      <div 
+        class="item  {{userSelect.m == init.m && userSelect.y == init.y && $item.Number == init.d ? 'select_Today' : ''}} {{$item.Number == userSelect.d ? 'select' : ''}}" 
+        for="{{rili}}" 
+        @click="selectDay($item.Number)"
+      >
         <text class="{{$item.week == 0 ||  $item.week == 6 ? 'color_red' : ''}}">{{$item.Number}}</text>
       </div>
     </div>
@@ -72,6 +78,10 @@
           <text><span class="color_red">忌：</span>{{ToDayInfo.avoid}}</text>
         </div>
       </div>
+    </div>
+    
+    <div class="footer">
+      <text class="about">关于</text>
     </div>
   </div>
 </template>
@@ -139,12 +149,14 @@
       }
     }
     .rili_line {
-      width: 100%;
       height: 200px;
-      border: 1px solid #999999;
-      border-left-width: 0px; 
-      border-right-width: 0px; 
+      border: 2px solid #cacaca;
+      background-color: #ffffff;
+      /* border-left-width: 0px;  */
+      /* border-right-width: 0px;  */
       padding: 10px 20px;
+      margin: 0 20px;
+      border-radius: 10px;
       align-items: center;
       .blue {
         width: 130px;
@@ -219,6 +231,14 @@
         .yi {
           margin-bottom: 20px;
         }
+      }
+    }
+    .footer {
+      justify-content: center;
+      margin-top: 150px;
+      .about {
+        color: #cacaca;
+        text-decoration:underline;
       }
     }
   }
