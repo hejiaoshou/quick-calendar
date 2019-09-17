@@ -24,7 +24,7 @@
 
     <div class="rili_line">
       <div class="blue">
-        <text>{{userSelect.d}}</text>
+        <text>{{dayFilter(userSelect.d)}}</text>
       </div>
       <div class="info">
         <text>{{ToDayInfo.lunar}}</text>
@@ -311,7 +311,6 @@
     },
 
     ToDay () {
-      console.log(this.init)
       this.userSelect.y = this.init.y
       this.userSelect.m = this.init.m
       this.userSelect.pure_m = this.init.pure_m
@@ -389,6 +388,14 @@
     showPicker () {
         this.$emitElement('show',null,'pickerOne')
         // this.$on('show',null,'pickerOne')
+    },
+
+    dayFilter(day) {
+      if(day < 10) {
+        return `0${day}`
+      } else {
+        return day
+      }
     }
   }
 </script>
