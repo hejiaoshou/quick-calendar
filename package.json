@@ -2,7 +2,7 @@
   "name": "wnl",
   "version": "1.0.0",
   "subversion": {
-    "toolkit": "0.6.2"
+    "toolkit": "0.6.3"
   },
   "description": "",
   "scripts": {
@@ -15,11 +15,13 @@
   },
   "devDependencies": {
     "babel-eslint": "^10.0.1",
-    "babel-loader": "^8.0.6",
     "eslint": "^5.12.1",
     "eslint-plugin-hybrid": "0.0.5",
-    "hap-toolkit": "0.6.2",
+    "hap-toolkit": "0.6.3",
     "less": "^3.10.3",
     "less-loader": "^5.0.0"
+  },
+  "dependencies": {
+    "js-base64": "^2.5.1"
   }
 }

@@ -3,9 +3,11 @@
   "name": "小日历",
   "versionName": "1.0.0",
   "versionCode": "1",
-  "minPlatformVersion": "101",
+  "minPlatformVersion": "1010",
   "icon": "/Common/logo.png",
   "features": [
+    { "name": "system.storage"},
+    { "name": "system.network"},
     { "name": "system.prompt" },
     { "name": "system.router" },
     { "name": "system.shortcut" },
@@ -16,7 +18,10 @@
     { "origin": "*" }
   ],
   "config": {
-    "logLevel": "debug"
+    "logLevel": "debug",
+    "data":{
+      "umeng_appkey" : "马赛克"
+    }
   },
   "router": {
     "entry": "home",

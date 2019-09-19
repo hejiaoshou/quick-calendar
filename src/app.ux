@@ -3,6 +3,7 @@
    * 应用级别的配置，供所有页面公用
    */
   import util from './util'
+  import './umenganalysis.es.min'; // 友盟统计
 
   export default {
     showMenu: util.showMenu,
@@ -11,6 +12,10 @@
     getDeviceInfo: util.getDeviceInfo,
     Ajax: util.Ajax,
     goTo: util.goTo,
-    goBack: util.goBack
+    goBack: util.goBack,
+    onCreate(){
+      console.log("[app.ux] onCreate...");
+      $umeng_stat.init(this); // 初始化友盟统计
+    }
   }
 </script>

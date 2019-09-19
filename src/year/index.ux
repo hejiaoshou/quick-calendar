@@ -81,6 +81,15 @@
         oneTotwelve: [],
         selected: 0
       },
+
+      onShow() {
+        $umeng_stat.resume(this)
+      },
+
+      onHide() {
+        $umeng_stat.pause(this);
+      },
+
       onInit () {
         this.getHoliDay()
 
@@ -90,6 +99,7 @@
 
         this.selected = this.oneTotwelve.indexOf(this.y*1)
       },
+
       getHoliDay () {
         var url = `http://v.juhe.cn/calendar/year?key=044f43470d3a3fd8ca231298094098e1&year=${this.y}`
         this.$app.$def.Ajax(url).then(res => {
@@ -103,6 +113,7 @@
           }
         })
       },
+      
       selectYear (val) {
         this.y = this.oneTotwelve[val.newSelected]
         this.getHoliDay()

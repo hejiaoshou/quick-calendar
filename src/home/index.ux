@@ -24,7 +24,7 @@
         for="{{rili}}" 
         @click="selectDay($item.Number)"
       >
-        <text class="{{$item.week == 0 ||  $item.week == 6 ? 'color_red' : ''}}">{{$item.Number}}</text>
+        <text class="item-text {{$item.week == 0 ||  $item.week == 6 ? 'color_red' : ''}}">{{$item.Number}}</text>
       </div>
     </div>
 
@@ -79,10 +79,10 @@
         </div>
       </div>
     </div>
-    
+<!--     
     <div class="footer">
       <text class="about">关于</text>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -138,6 +138,11 @@
         .color_red {
           color: red;
         }
+        .item-text {
+          width: 100%;
+          height: 100%;
+          text-align: center;
+        }
       }
       .select_Today {
         border: 3px solid #888888;
@@ -152,10 +157,8 @@
       height: 200px;
       border: 2px solid #cacaca;
       background-color: #ffffff;
-      /* border-left-width: 0px;  */
-      /* border-right-width: 0px;  */
       padding: 10px 20px;
-      margin: 0 20px;
+      margin: 20px;
       border-radius: 10px;
       align-items: center;
       .blue {
@@ -278,6 +281,14 @@
       }
     },
 
+    onShow() {
+      $umeng_stat.resume(this)
+    },
+
+    onHide() {
+      $umeng_stat.pause(this);
+    },
+
     onInit () {
       // 获得年月日星期
       var _date = new Date()
@@ -379,13 +390,14 @@
       this.getToDayInfo()
     },
 
-    selectDay(_val) {
+    selectDay(_val,e) {
       if (_val == ' ') {
           return
       }
       this.userSelect.week = new Date(this.userSelect.y,this.userSelect.pure_m,_val).getDay()
       this.userSelect.d = _val
       this.getToDayInfo()
+      // e.stopPropagation()
     },
 
     getToDayInfo () {
