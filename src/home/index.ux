@@ -38,13 +38,13 @@
         <text>{{week[userSelect.week]}}</text>
       </div>
       <div class="lookHoliday">
-        <div class="Holiday" @click="this.$app.$def.goTo('/yue',{y:userSelect.y,m:userSelect.m})">
+        <div class="Holiday" @click="lookVacation('/yue',{y:userSelect.y,m:userSelect.m})">
           <div class="redDot"></div>
           <div>
             <text>查看近期假期</text>
           </div>
         </div>
-        <div class="Holiday" @click="this.$app.$def.goTo('/year',{y:userSelect.y,m:userSelect.m})">
+        <div class="Holiday" @click="lookVacation('/year',{y:userSelect.y,m:userSelect.m})">
           <div class="redDot"></div>
           <div>
             <text>查看当年假期</text>
@@ -415,6 +415,15 @@
           _this.$app.$def.Alert('网络繁忙，请稍后再试！')
         }
       })
+    },
+
+    lookVacation(uri, data) {
+      console.log(data)
+      if (data.y < 2011 || data.y > 2019) {
+        this.$app.$def.Alert("只能查看2011 - 2019 年之间的假期")
+        return false
+      }
+      this.$app.$def.goTo(uri,data)
     },
 
     showPicker () {
