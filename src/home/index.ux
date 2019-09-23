@@ -33,6 +33,7 @@
         <text>{{dayFilter(userSelect.d)}}</text>
       </div>
       <div class="info">
+        <!-- 农历写法 ： 八月二十五 -->
         <text>{{ToDayInfo.lunar}}</text>
         <text>{{userSelect.y + '-' + userSelect.m + '-' + userSelect.d}}</text>
         <text>{{week[userSelect.week]}}</text>
@@ -55,17 +56,21 @@
 
     <div class="Info">
       <div class="Info_top">
+        <!-- 节日 -->
         <div if="{{ToDayInfo.holiday}}">
           <text class="red_color">{{ToDayInfo.holiday}}</text>
         </div>
+        <!-- 农历年 -->
         <div if="{{ToDayInfo.lunarYear}}">
           <text>{{ToDayInfo.lunarYear}}</text>
         </div>
+        <!-- 生肖 -->
         <div if="{{ToDayInfo.animalsYear}}">
           <text>属{{ToDayInfo.animalsYear}}</text>
         </div>
       </div>
-
+      
+      <!-- 节假日描述 -->
       <div class="Info_center" if="{{ToDayInfo.desc}}">
         <text>{{ToDayInfo.desc}}</text>
       </div>
@@ -249,6 +254,8 @@
 </style>
 
 <script>
+  import calendar from "../calendar.js"
+
   export default {
     private: {
       top_list: ['日','一','二','三','四','五','六'],
@@ -282,7 +289,7 @@
     },
 
     onShow() {
-      $umeng_stat.resume(this)
+      $umeng_stat.resume(this);
     },
 
     onHide() {
@@ -403,16 +410,20 @@
     getToDayInfo () {
       var _this = this
       var _date = `${this.userSelect.y}-${this.userSelect.m}-${this.userSelect.d}`
-      var url = `http://v.juhe.cn/calendar/day?key=044f43470d3a3fd8ca231298094098e1&date=${_date}`
+      var date = calendar.solar2lunar(this.userSelect.y,this.userSelect.m,this.userSelect.d)
+
+      // var url = `http://v.juhe.cn/calendar/day?key=044f43470d3a3fd8ca231298094098e1&date=${_date}`
+      var url = `http://hl.zdic.net/j/gl/${this.userSelect.y}/${this.userSelect.m}.php`
 
       this.$app.$def.Ajax(url).then(res => {
-        res.data = JSON.parse(res.data)
+        console.log(111)
+        console.log(JSON.parse(`${res.data}`))
 
         if (res.code == 200 && res.data.reason == 'Success') {
           _this.ToDayInfo =  res.data.result.data
         } else {
           _this.ToDayInfo = {}
-          _this.$app.$def.Alert('网络繁忙，请稍后再试！')
+          // _this.$app.$def.Alert('网络繁忙，请稍后再试！')
         }
       })
     },
