@@ -34,7 +34,7 @@
       </div>
       <div class="info">
         <!-- 农历写法 ： 八月二十五 -->
-        <text>{{ToDayInfo.lunar}}</text>
+        <text if="{{ToDayInfo.nongliDay}}">{{splitln(ToDayInfo.nongliDay)}}</text>
         <text>{{userSelect.y + '-' + userSelect.m + '-' + userSelect.d}}</text>
         <text>{{week[userSelect.week]}}</text>
       </div>
@@ -61,12 +61,15 @@
           <text class="red_color">{{ToDayInfo.holiday}}</text>
         </div>
         <!-- 农历年 -->
-        <div if="{{ToDayInfo.lunarYear}}">
-          <text>{{ToDayInfo.lunarYear}}</text>
+        <div if="{{ToDayInfo.nongliYear}}">
+          <text>{{ToDayInfo.nongliYear}}</text>
         </div>
-        <!-- 生肖 -->
-        <div if="{{ToDayInfo.animalsYear}}">
-          <text>属{{ToDayInfo.animalsYear}}</text>
+        <div if="{{ToDayInfo.nongliDate}}">
+          <text>{{ToDayInfo.nongliDate}}</text>
+        </div>
+        <!-- 星座 -->
+        <div if="{{ToDayInfo.xingzuo}}">
+          <text>{{ToDayInfo.xingzuo}}</text>
         </div>
       </div>
       
@@ -76,11 +79,11 @@
       </div>
 
       <div class="Info_bottom">
-        <div class="yi" if="{{ToDayInfo.suit}}">
-          <text><span class="color_blue">宜：</span>{{ToDayInfo.suit}}</text>
+        <div class="yi" if="{{ToDayInfo.yi}}">
+          <text><span class="color_blue">宜：</span>{{ToDayInfo.yi}}</text>
         </div>
-        <div class="ji" if="{{ToDayInfo.avoid}}">
-          <text><span class="color_red">忌：</span>{{ToDayInfo.avoid}}</text>
+        <div class="ji" if="{{ToDayInfo.ji}}">
+          <text><span class="color_red">忌：</span>{{ToDayInfo.ji}}</text>
         </div>
       </div>
     </div>
@@ -315,6 +318,10 @@
       this.getToDayInfo()
     },
 
+    splitln(val) {
+      return val.split('農曆')[1]
+    },
+
     render (_data) {
       var _y = _data.y
       var _m = _data.m
@@ -360,6 +367,10 @@
     },
     
     selectDate (val) {
+      if (val.year < 1901 || val.year > 2048) {
+        this.$app.$def.Alert("请选择1901 - 2048年之间的时间")
+        return false
+      }
       var _week = new Date(val.year,val.month,val.day).getDay()
 
       this.userSelect.y = val.year
@@ -409,21 +420,21 @@
 
     getToDayInfo () {
       var _this = this
-      var _date = `${this.userSelect.y}-${this.userSelect.m}-${this.userSelect.d}`
-      var date = calendar.solar2lunar(this.userSelect.y,this.userSelect.m,this.userSelect.d)
+      var y = this.userSelect.y,
+          m = this.userSelect.m,
+          d = this.userSelect.d;
 
       // var url = `http://v.juhe.cn/calendar/day?key=044f43470d3a3fd8ca231298094098e1&date=${_date}`
-      var url = `http://hl.zdic.net/j/gl/${this.userSelect.y}/${this.userSelect.m}.php`
+      var url = `http://www.hedingheng.com/day?date=${y}-${m}-${d}`
 
       this.$app.$def.Ajax(url).then(res => {
-        console.log(111)
-        console.log(JSON.parse(`${res.data}`))
+        res.data = JSON.parse(res.data);
 
-        if (res.code == 200 && res.data.reason == 'Success') {
-          _this.ToDayInfo =  res.data.result.data
+        if (res.code == 200 && res.data.code == 1) {
+          _this.ToDayInfo =  res.data.data
+          console.log(_this.ToDayInfo)
         } else {
-          _this.ToDayInfo = {}
-          // _this.$app.$def.Alert('网络繁忙，请稍后再试！')
+          _this.$app.$def.Alert('网络繁忙，请稍后再试！')
         }
       })
     },
