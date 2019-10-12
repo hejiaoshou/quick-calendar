@@ -1,10 +1,10 @@
 {
-  "name": "wnl",
-  "version": "1.0.0",
+  "name": "xrl",
+  "version": "1.0.1",
   "subversion": {
     "toolkit": "0.6.3"
   },
-  "description": "",
+  "description": "简洁的日历软件",
   "scripts": {
     "build": "hap build",
     "release": "hap release",
