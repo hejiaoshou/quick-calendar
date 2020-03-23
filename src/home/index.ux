@@ -441,8 +441,8 @@
 
     lookVacation(uri, data) {
       console.log(data)
-      if (data.y < 2011 || data.y > 2019) {
-        this.$app.$def.Alert("只能查看2011 - 2019 年之间的假期")
+      if (data.y < 2011 || data.y > 2020) {
+        this.$app.$def.Alert("只能查看2011 - 2020 年之间的假期")
         return false
       }
       this.$app.$def.goTo(uri,data)

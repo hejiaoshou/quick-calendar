@@ -14,7 +14,6 @@
     goTo: util.goTo,
     goBack: util.goBack,
     onCreate(){
-      console.log("[app.ux] onCreate...");
       $umeng_stat.init(this); // 初始化友盟统计
     }
   }
