@@ -1,9 +1,9 @@
 {
-  "package": "com.hedingheng.xrl",
-  "name": "小日历",
-  "versionName": "1.0.2",
+  "package": "com.hedingheng.qrl",
+  "name": "轻日历",
+  "versionName": "1.1.1",
   "versionCode": "3",
-  "minPlatformVersion": "1010",
+  "minPlatformVersion": "1040",
   "icon": "/Common/logo.png",
   "features": [
     { "name": "system.storage"},
@@ -12,7 +12,8 @@
     { "name": "system.router" },
     { "name": "system.shortcut" },
     { "name": "system.device"},
-    {"name": "system.fetch"}
+    {"name": "system.fetch"},
+    { "name": "system.geolocation" }
   ],
   "permissions": [
     { "origin": "*" }
@@ -34,6 +35,9 @@
       },
       "year": {
         "component": "index"
+      },
+      "news": {
+        "component": "news"
       }
     }
   },
@@ -43,7 +47,9 @@
     "titleBar": false,
     "menu": false,
     "pages": {
-
+      "news": {
+        "titleBar": true
+      }
     }
   }
 }

@@ -1,0 +1,26 @@
+<template>
+  <web id="web" src="{{url}}"></web>
+</template>
+
+<script>
+export default {
+  protected: {
+    url: ''
+  },
+
+  onBackPress () {
+    this.$element('web').canBack({
+      callback: function (e) {
+        if (e) {
+          // 加载历史列表中的上一个 URL
+          this.$element('web').back()
+        } else {
+          this.$app.$def.goBack()
+        }
+      }.bind(this)
+    })
+    // 阻止默认行为，等待异步操作
+    return true
+  }
+}
+</script>

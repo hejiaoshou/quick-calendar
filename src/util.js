@@ -73,11 +73,17 @@ function Alert(val) {
   })
 }
 
-function Ajax (url) {
+function Ajax (url, method, data) {
   const fetch = require('@system.fetch')
+  let host = ""
+  if (url.indexOf("http") == -1) {
+    host = "http://qrl.hedingheng.com"
+  }
   return new Promise ((resolve, reject) => {
     fetch.fetch({
-      url: url,
+      url: `${host}${url}`,
+      method: method || "GET",
+      data: data || "",
       success: function (response) {
         resolve(response)
       },

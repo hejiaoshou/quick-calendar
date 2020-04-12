@@ -4,7 +4,7 @@
     <div class="header">
       <!-- <text>上个月</text> -->
       <picker type="date" id="pickerOne" @change="selectDate()" value="{{userSelect.y + '-' + userSelect.m + '-' + userSelect.d}}"></picker>
-      <!-- <image class="pull" @click="showPicker()" src="/Common/pull.png"></image> -->
+      <image class="pull" @click="showPicker()" src="/Common/pull.png"></image>
       <div class="ToDay" @click="ToDay()">
         <text>今</text>
       </div>
@@ -17,14 +17,18 @@
       </div>
     </div>
 
-    <!-- <div class="rili" @swipe="swipeSelect()"> -->
-    <div class="rili">
+    <div class="rili" @swipe="swipeSelect()">
       <div 
         class="item  {{userSelect.m == init.m && userSelect.y == init.y && $item.Number == init.d ? 'select_Today' : ''}} {{$item.Number == userSelect.d ? 'select' : ''}}" 
         for="{{rili}}" 
         @click="selectDay($item.Number)"
       >
-        <text class="item-text {{$item.week == 0 ||  $item.week == 6 ? 'color_red' : ''}}">{{$item.Number}}</text>
+        <text 
+          class="item-text {{$item.week == 0 ||  $item.week == 6 ? 'color_red' : ''}}"
+        >{{$item.Number}}</text>
+        <text 
+          class="item-text item-old-text {{$item.week == 0 ||  $item.week == 6 ? 'color_red' : ''}}"
+        >{{$item.oldDate.Term || $item.oldDate.IDayCn}}</text>
       </div>
     </div>
 
@@ -38,7 +42,7 @@
         <text>{{userSelect.y + '-' + userSelect.m + '-' + userSelect.d}}</text>
         <text>{{week[userSelect.week]}}</text>
       </div>
-      <div class="lookHoliday">
+      <!-- <div class="lookHoliday">
         <div class="Holiday" @click="lookVacation('/yue',{y:userSelect.y,m:userSelect.m})">
           <div class="redDot"></div>
           <div>
@@ -51,7 +55,7 @@
             <text>查看当年假期</text>
           </div>
         </div>
-      </div>
+      </div> -->
     </div>
 
     <div class="Info">
@@ -91,179 +95,34 @@
     <div class="footer">
       <text class="about">关于</text>
     </div> -->
+
+    <div class="news">
+      <div
+        class="news-item"
+        for="news"
+        onclick="toNews({url: $item.url})"
+      >
+        <div class="news-text">
+          <text class="news-title">{{$item.title}}</text>
+          <text class="news-date">{{$item.date}}</text>
+        </div>
+        <img class="news-img" src="{{$item.thumbnail_pic_s}}" alt="">
+      </div>
+    </div>
+
   </div>
 </template>
 
-<style lang="less">
-  .home {
-    flex-direction: column;
-    /* justify-content: center; */
-    /* align-items: center; */
-    .header {
-      width: 100%;
-      height: 80px;
-      background-color: #e1c8a0;
-      justify-content: center;
-      align-items: center;
-      picker {
-        color: #ffffff;
-        font-size: 30px;
-      }
-      .pull {
-          width: 40px;
-          resize-mode: contain;
-      }
-      .ToDay {
-        justify-content: center;
-        align-items: center;
-        width: 40px;
-        height: 40px;
-        font-size: 30px;
-        border: 1px solid #fff;
-        border-radius: 40px;
-        margin-left: 40px;
-          text {
-            color: #fff;
-          }
-      }
-    }
-    .top {
-      padding: 10px 0px;
-      .top_item {
-        flex: 1;
-        justify-content: center;
-      }
-      .color_red {
-        color: red;
-      }
-    }
-    .rili {
-      flex-wrap: wrap;
-      .item {
-        width: 107.14px;
-        height: 107.14px;
-        justify-content: center;
-        .color_red {
-          color: red;
-        }
-        .item-text {
-          width: 100%;
-          height: 100%;
-          text-align: center;
-        }
-      }
-      .select_Today {
-        border: 3px solid #888888;
-        border-radius: 10px;
-      }
-      .select {
-        border: 3px solid red;
-        border-radius: 10px;
-      }
-    }
-    .rili_line {
-      height: 200px;
-      border: 2px solid #cacaca;
-      background-color: #ffffff;
-      padding: 10px 20px;
-      margin: 20px;
-      border-radius: 10px;
-      align-items: center;
-      .blue {
-        width: 130px;
-        height: 130px;
-        margin: 0px 40px;
-        background-color: #316dab;
-        align-items: center;
-        justify-content: center;
-        border-radius: 10px;
-        text {
-          font-size: 50px;
-          color: #fff;
-        }
-      }
-      .info {
-        height: 100%;
-        padding: 20px 10px;
-        justify-content: space-between;
-        flex-direction: column;
-      }
-      .lookHoliday {
-        flex-direction: column;
-        align-items: center;
-        margin-left: 50px;
-        .Holiday {
-          height: 60px;
-          align-items: center;
-          text {
-            color: red;
-          }
-          .redDot {
-            width: 20px;
-            height: 20px;
-            margin-right: 10px;
-            background-color: red;
-            border-radius: 20px;
-          }
-        }
-
-      }
-    }
-    .Info {
-      flex-direction: column;
-      .Info_top {
-        width: 100%;
-        div {
-          margin: 30px 20px 20px 30px;
-        }
-        .red_color {
-          color: red;
-        }
-      }
-      .Info_center {
-        width: 100%;
-        margin: 10px 30px 20px;
-      }
-      .Info_bottom {
-        flex-direction: column;
-        margin: 10px 30px 20px;
-        text {
-          line-height: 45px;
-        }
-        span {
-          line-height: 45px;
-        }
-        .color_red {
-          color: red;
-        }
-        .color_blue {
-          color: #316dab;
-        }
-        .yi {
-          margin-bottom: 20px;
-        }
-      }
-    }
-    .footer {
-      justify-content: center;
-      margin-top: 150px;
-      .about {
-        color: #cacaca;
-        text-decoration:underline;
-      }
-    }
-  }
-
-</style>
-
 <script>
   import calendar from "../calendar.js"
-
+  import device from '@system.device'
+  import geolocation from '@system.geolocation' // 定位
   export default {
     private: {
       top_list: ['日','一','二','三','四','五','六'],
       week: ['星期日','星期一','星期二','星期三','星期四','星期五','星期六'],
       rili: [],
+      news: [],
       donghua: 100,
       init: {
         y: 2000, //年
@@ -293,6 +152,26 @@
 
     onShow() {
       $umeng_stat.resume(this);
+      let _this = this;
+      this.collectDeviceInfo();
+      this.examineNewsSwitch()
+      // 此接口需要用户授权，使用前需要弹窗提醒用户同意定位权限
+      // geolocation.getLocation({
+      //   success: function(data) {
+      //           _this.$app.$def.Alert(`handling success: longitude = ${data.longitude}, latitude = ${
+      //         data.latitude
+      //       }`
+      //     )
+      //   },
+      //   fail: function(data, code) {
+      //     // code : 1000 系统定位关闭 201 用户拒绝权限
+      //     _this.$app.$def.Alert(`handling fail, code = ${code}`)
+      //   }
+      // })
+    },
+
+    toNews(data) {
+      this.$app.$def.goTo("/news",data)
     },
 
     onHide() {
@@ -300,6 +179,7 @@
     },
 
     onInit () {
+
       // 获得年月日星期
       var _date = new Date()
       this.init.y = _date.getFullYear()
@@ -322,6 +202,62 @@
       return val.split('農曆')[1]
     },
 
+    collectDeviceInfo() {
+      let _this = this;
+
+      device.getUserId({
+        success: function(data) {
+
+          device.getInfo({
+            success: function(ret) {
+
+              _this.$app.$def.Ajax("/collectLog","POST",{
+                clientVersions: '1.1.1',
+                userId: data.userId,
+                deviceInfo: ret
+                }).then(res => {
+                // res.data = JSON.parse(res.data);
+              })
+
+            }
+          })
+        },
+      })
+    },
+
+    getNews() {
+      
+      let _this = this
+
+      this.$app.$def.Ajax("http://v.juhe.cn/toutiao/index?type=top&key=masaike","GET")
+      .then(res => {
+        if (res.code == 200) {
+          let _jh_res = JSON.parse(res.data)
+          if (_jh_res.result.stat == 1) {
+            console.log(_jh_res.result.data)
+            _this.news = _jh_res.result.data
+          }
+        }
+      })
+    },
+
+    examineNewsSwitch() {
+      let _this = this;
+
+      this.$app.$def.Ajax("/newsSwitch")
+        .then(res => {
+          if (res.code == 200) {
+            let _res = JSON.parse(res.data)
+
+            if (_res.code == 200 && _res.data) {
+              _this.getNews();
+            }
+
+          }
+        })
+
+    },
+
     render (_data) {
       var _y = _data.y
       var _m = _data.m
@@ -332,25 +268,48 @@
       var last_Number = yue_dayNumber.toString().split(' ')[2]*1
       // 填充日历，星期
       var _rili = []
-      for(var i = 1; i <= last_Number; i++) {
-        var _thisDay = {
+      for(let i = 1; i <= last_Number; i++) {
+        let oldDate = calendar.solar2lunar(_y, _m, i)
+
+        console.log(oldDate)
+        let _thisDay = {
           Number: i,
-          week: new Date(_y,pure_m,i).getDay()
+          week: new Date(_y,pure_m,i).getDay(),
+          oldDate: oldDate
         }
+        
         _rili.push(_thisDay)
       }
+
       // 如果第一项不是周末，填充缺省的空白日期
       if (_rili[0].week !== 0) {
 
         var one_day_week = _rili[0].week*1
-        var _thisDay = {
+        let _thisDay = {
           Number: ' ',
-          week: '-'
+          week: '-',
+          oldDate: {}
         }
 
         for (var y = 0; y < one_day_week; y++) {
           _rili.unshift(_thisDay)
         }
+      }
+
+      // 不是7的倍数，无法填满所有各自，填充空白格，避免最后一排错位
+      if (_rili.length % 7 !== 0) {
+        let _thisDay = {
+          Number: ' ',
+          week: '-',
+          oldDate: {}
+        }
+
+        let _c = 7 - (_rili.length % 7) // 计算差几个格子，可以凑满7的倍数
+
+        for (let i = 0; i < _c; i++) {
+          _rili.push(_thisDay)
+        }
+
       }
       this.rili = _rili
     },
@@ -424,15 +383,14 @@
           m = this.userSelect.m,
           d = this.userSelect.d;
 
-      // var url = `http://v.juhe.cn/calendar/day?key=044f43470d3a3fd8ca231298094098e1&date=${_date}`
-      var url = `http://www.hedingheng.com/day?date=${y}-${m}-${d}`
+      var url = `/day?date=${y}-${m}-${d}`
+      // var url = `http://192.168.0.105:82/day?date=${y}-${m}-${d}`
 
       this.$app.$def.Ajax(url).then(res => {
         res.data = JSON.parse(res.data);
 
         if (res.code == 200 && res.data.code == 1) {
           _this.ToDayInfo =  res.data.data
-          console.log(_this.ToDayInfo)
         } else {
           _this.$app.$def.Alert('网络繁忙，请稍后再试！')
         }
@@ -440,7 +398,6 @@
     },
 
     lookVacation(uri, data) {
-      console.log(data)
       if (data.y < 2011 || data.y > 2020) {
         this.$app.$def.Alert("只能查看2011 - 2020 年之间的假期")
         return false
@@ -462,3 +419,7 @@
     }
   }
 </script>
+
+<style lang="less">
+@import './index.less';
+</style>
