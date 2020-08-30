@@ -17,7 +17,7 @@
       </div>
     </div>
 
-    <div class="rili" @swipe="swipeSelect()">
+    <div class="rili">
       <div 
         class="item  {{userSelect.m == init.m && userSelect.y == init.y && $item.Number == init.d ? 'select_Today' : ''}} {{$item.Number == userSelect.d ? 'select' : ''}}" 
         for="{{rili}}" 
@@ -121,7 +121,9 @@
     private: {
       top_list: ['日','一','二','三','四','五','六'],
       week: ['星期日','星期一','星期二','星期三','星期四','星期五','星期六'],
+      lastMonth: [],
       rili: [],
+      nextMonth: [],
       news: [],
       donghua: 100,
       init: {
@@ -152,22 +154,8 @@
 
     onShow() {
       $umeng_stat.resume(this);
-      let _this = this;
+
       this.collectDeviceInfo();
-      this.examineNewsSwitch()
-      // 此接口需要用户授权，使用前需要弹窗提醒用户同意定位权限
-      // geolocation.getLocation({
-      //   success: function(data) {
-      //           _this.$app.$def.Alert(`handling success: longitude = ${data.longitude}, latitude = ${
-      //         data.latitude
-      //       }`
-      //     )
-      //   },
-      //   fail: function(data, code) {
-      //     // code : 1000 系统定位关闭 201 用户拒绝权限
-      //     _this.$app.$def.Alert(`handling fail, code = ${code}`)
-      //   }
-      // })
     },
 
     toNews(data) {
@@ -196,6 +184,10 @@
       
       this.render(this.init)
       this.getToDayInfo()
+    },
+
+    swiperTest(e) {
+      console.log(e.index)
     },
 
     splitln(val) {
@@ -229,7 +221,7 @@
       
       let _this = this
 
-      this.$app.$def.Ajax("http://v.juhe.cn/toutiao/index?type=top&key=masaike","GET")
+      this.$app.$def.Ajax("http://v.juhe.cn/toutiao/index?type=top&key=28d2bbc74925f4e035ef7b60dfc5e8b5","GET")
       .then(res => {
         if (res.code == 200) {
           let _jh_res = JSON.parse(res.data)
